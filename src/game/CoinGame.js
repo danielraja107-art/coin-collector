@@ -119,11 +119,11 @@ class CoinGame {
 
   createPlayer() {
     const geometry =
-      new THREE.BoxGeometry(1, 1, 1);
+      new THREE.SphereGeometry(0.5, 32, 32);
 
     const material =
       new THREE.MeshStandardMaterial({
-        color: 0x0066ff,
+        color: 0xff0000,
       });
 
     this.player = new THREE.Mesh(
@@ -241,15 +241,24 @@ class CoinGame {
     if (direction.length() > 0) {
       direction.normalize();
 
+      const distance =
+        this.moveSpeed * delta;
+
       this.player.position.x +=
         direction.x *
-        this.moveSpeed *
-        delta;
+        distance;
 
       this.player.position.z +=
         direction.z *
-        this.moveSpeed *
-        delta;
+        distance;
+
+      const rotation = distance / 0.5;
+
+      this.player.rotation.x +=
+        direction.z * rotation;
+
+      this.player.rotation.z -=
+        direction.x * rotation;
     }
 
     // Keep player inside map
